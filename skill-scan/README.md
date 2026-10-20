@@ -1,6 +1,6 @@
 # Forge skill scan (GitHub Action)
 
-Published in the `skill-scan/` folder of [theagentforge/forge-check](https://github.com/theagentforge/forge-check), so you use it as `theagentforge/forge-check/skill-scan@v1`.
+The main home of this action is [theagentforge/skill-scan](https://github.com/theagentforge/skill-scan); this copy keeps `theagentforge/forge-check/skill-scan@v1` working.
 
 Agent skills and instruction files are text your AI agent obeys. This action reads the ones in each pull request,
 including `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, Cursor rules and Copilot instructions, and flags what virus
@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: theagentforge/forge-check/skill-scan@v1
+      - uses: theagentforge/skill-scan@v1
 ```
 
 For the strongest supply-chain safety, pin both actions to a full commit SHA instead of `@v5` and `@v1`.
@@ -66,7 +66,7 @@ permissions:
   security-events: write
 steps:
   - uses: actions/checkout@v5
-  - uses: theagentforge/forge-check/skill-scan@v1
+  - uses: theagentforge/skill-scan@v1
     with:
       sarif-file: forge-skill-scan.sarif
       fail-on: never
