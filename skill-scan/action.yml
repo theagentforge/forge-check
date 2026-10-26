@@ -37,6 +37,10 @@ inputs:
     description: Forge address, for the links in the comment.
     required: false
     default: https://theagentforge.io
+  state-file:
+    description: "A file for the last run's results, so the job summary says what changed since then (newer scan rules, changed files, findings that appeared or went away). Keep it between runs with actions/cache, for example ${{ runner.temp }}/forge-skill-scan-state.json; don't commit it. Default empty: no memory."
+    required: false
+    default: ""
 outputs:
   files:
     description: How many files were scanned.

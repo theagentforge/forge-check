@@ -1,13 +1,11 @@
 # Forge skill scan (GitHub Action)
 
-The main home of this action is [theagentforge/skill-scan](https://github.com/theagentforge/skill-scan); this copy keeps `theagentforge/forge-check/skill-scan@v1` working.
-
 Agent skills and instruction files are text your AI agent obeys. This action reads the ones in each pull request,
 including `SKILL.md`, `AGENTS.md`, `CLAUDE.md`, Cursor rules and Copilot instructions, and flags what virus
 scanners miss: downloads piped into a shell, reads of key files, data sent to throwaway servers, hidden
 instructions and invisible characters.
 
-- **Nothing leaves GitHub.** The scan runs on the runner, using the same 34 rules as
+- **Nothing leaves GitHub.** The scan runs on the runner, using the same rules as
   [theagentforge.io/scan](https://theagentforge.io/scan?from=skill-scan-readme). It needs no account and no key.
 - **One calm comment per pull request,** edited in place, plus notes on the flagged lines. It never calls anything
   "malicious": a match is a reason to read the line.
@@ -51,8 +49,25 @@ the line notes and job summary still show every finding.
 | `fail-on` | `high` | `high`, `medium` (also fail on medium), or `never` (report only) |
 | `comment` | `auto` | One pull request comment, posted when there is something to say and the token may write. `never` turns it off |
 | `sarif-file` | none | Also write SARIF to this path, for GitHub code scanning (see below) |
+| `state-file` | none | A file for the last run's results (inside the workspace or `runner.temp`), kept by `actions/cache`. The job summary then says what changed since the last run (see below) |
 
 Outputs: `files`, `high`, `medium`, `low` and `verdict` (`flagged`, `caution` or `clear`).
+
+## What changed since the last run (optional)
+With a `state-file` kept by `actions/cache`, the job summary lists what changed since the last run: newer scan
+rules, files whose text changed, and findings that appeared or went away. The file holds only each scanned file's
+path, fingerprint and finding counts. It stays in your repository's Actions cache and is never committed or sent.
+
+```yaml
+  - uses: actions/cache@v6
+    with:
+      path: ${{ runner.temp }}/forge-skill-scan-state.json
+      key: forge-skill-scan-${{ github.run_id }}
+      restore-keys: forge-skill-scan-
+  - uses: theagentforge/skill-scan@v1
+    with:
+      state-file: ${{ runner.temp }}/forge-skill-scan-state.json
+```
 
 ## Quoting a pattern on purpose
 A guardrail list that says "never run `rm -rf /`" can match the very rule it warns about. Put
