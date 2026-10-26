@@ -1,5 +1,5 @@
 name: Forge skill scan
-description: Scan the agent skills and instruction files in a pull request (SKILL.md, AGENTS.md, CLAUDE.md, Cursor rules) for hidden instructions, piped installs and key theft. Runs on the runner; no file leaves GitHub.
+description: Scans agent skill files in pull requests for hidden instructions, piped installs and key theft. No file leaves GitHub.
 author: The Agent Forge
 branding:
   icon: shield
